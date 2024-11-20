@@ -50,22 +50,22 @@ $$
 - **Minorante:** Un numero $m$ è un minorante di un insieme $A$ se $x \geq m \space \forall x \in A$.
 - **Massimo:** Un numero $M$ è il massimo di un insieme $A$ se $M \in A$ e $M$ è un maggiorante di $A$.
 - **Minimo:** Un numero $m$ è il minimo di un insieme $A$ se $m \in A$ e $m$ è un minorante di $A$.
-- **Estremo superiore:** Sia $X \subseteq \R$ un sottoinsieme di numeri reali, se $X$ è limitato superiormente, allora chiameremo $y \subseteq \R$ l'estremo superiore di $X$ e scriveremo $sup(X)=y$ se:
+- **Estremo superiore:** Sia $X \subseteq \mathbb{R}$ un sottoinsieme di numeri reali, se $X$ è limitato superiormente, allora chiameremo $y \subseteq \mathbb{R}$ l'estremo superiore di $X$ e scriveremo $sup(X)=y$ se:
     - $y$ è un maggiorante di $X$.
     - Se scegliamo un numero $z<y$ si ha che $z$ non è un maggiorante di $x$.
   
     Se X è un insieme illimitato superiormente, ossia non ammette alcun maggiorante, diremo per definizione che l'estremo di $X$ è $+\infty$.
 
-- **Estremo inferiore:** Sia $X \subseteq \R$ un sottoinsieme di numeri reali, se $x$ è limitato inferiormente, allora chiameremo $y \in \R$ l'estremo inferiore di $X$ e scriveremo $sup(x)=y$ se:
+- **Estremo inferiore:** Sia $X \subseteq \mathbb{R}$ un sottoinsieme di numeri reali, se $x$ è limitato inferiormente, allora chiameremo $y \in \mathbb{R}$ l'estremo inferiore di $X$ e scriveremo $sup(x)=y$ se:
     - $y$ è un maggiorante di $x$.
     - Se scegliamo un numero $z>y$ si ha che $z$ non è un maggiorante di $x$.
   
     Se X è un insieme illimitato superiormente, ossia non ammette alcun maggiorante, diremo per definizione che l'estremo di $X$ è $-\infty$.
 
-Dato un insieme $X \subseteq \R$, esistono e sono _unici_ l'estremo inferiore e superiore di $X$.
+Dato un insieme $X \subseteq \mathbb{R}$, esistono e sono _unici_ l'estremo inferiore e superiore di $X$.
 
 #### Esempio di maggioranti e minoranti
-Sia $X = \{x \in \R \mid x \leq 1\}$, allora:
+Sia $X = \{x \in \mathbb{R} \mid x \leq 1\}$, allora:
 - $M=1$ è un maggiorante di $X$.
 - $m=-\infty$ è un minorante di $X$.
 - $sup(X)=1$ è l'estremo superiore di $X$.
@@ -74,7 +74,7 @@ Sia $X = \{x \in \R \mid x \leq 1\}$, allora:
 - $min(X)=-\infty$ è il minimo di $X$.
   
 #### Esempio di estremo superiore e inferiore
-Sia $X = \{x \in \R \mid x < 1\}$, allora:
+Sia $X = \{x \in \mathbb{R} \mid x < 1\}$, allora:
 - $M=1$ è un maggiorante di $X$.
 - $m=-\infty$ è un minorante di $X$.
 - $sup(X)=1$ è l'estremo superiore di $X$.
@@ -84,7 +84,7 @@ Sia $X = \{x \in \R \mid x < 1\}$, allora:
 
 ### Potenze, radici, logaritmi
 Le _potenze_ sono moltiplicazioni ripetute, definide mediante due numeri detti _base_ ed _esponente_.
-Sia $\alpha \in \R$ e $p \in \Z$, allora:
+Sia $\alpha \in \mathbb{R}$ e $p \in \Z$, allora:
 $$
 \begin{align*}
 \alpha^p &= 
@@ -95,7 +95,64 @@ $$
     \end{cases}
 \end{align*}
 $$
+**Teorema:** Esistenza e unicità della radice n-esima di un numero reale positivo.`
+Siano $y \in \mathbb{R},\space y \geq 0,\space n\in N \backslash \{0\}$ allora esiste un unico numero reale positivo $x$ tale che $r^n=y$. $r$ si dice "radice n-esima di y" e si scrive $r=\sqrt[n]{y}$.
 
+#### Potenze razionali
+Le potenze con esponente fratto vengono definite come radici dalla base della potenza, dove il numeratore dell'esponente è l'esponente della base e il denominatore è l'indice della radice.
+$$
+\begin{align*}
+\alpha^{{p}/{q}} &:= 
+\begin {cases}
+\sqrt[q]{\alpha^p} = (a^p)^{(1/q)} & \text{ se } a\neq0,\text{ oppure }p\neq0\\
+1 & \text{ se } a\neq0,\space p=0\\
+0 & \text{ se } a=0,\space p\neq0\\
+\end{cases}
+\end{align*}
+$$
+
+#### Potenze reali
+Sia $a\in\mathbb{R},\space a>0$ e $r\in\mathbb{R}$, allora definiamo $a^r$ come:
+$$
+\begin{align*}
+&\text{Se }a>1 &\text{ allora }a^r = \sup\{a^p \mid p\in\mathbb{Q},\space p\leq r\}\\
+&\text{Se }a=1 &\text{ allora }a^r = 1\\
+&\text{Se }a\in(0,1) &\text{ allora }a^r = \frac{1}{a^{-r}}
+\end{align*}
+$$
+
+#### Logaritmi
+Il logaritmo è l'inverso della potenza, indicato generalmente con $\log_a(b)$. Sia $a>0,\space a\neq1$ e $x>0$, allora il logaritmo di $x$ in base $a$ è definito come:
+$$
+\begin{align*}
+\log_a(x) &= y \iff a^y = x
+\end{align*}
+$$
+Siano $a$ e $b$ due numeri reali, entrambi positivi e con $a\neq1$, definiamo il logaritmo in base $a$ di $b$ e scriviamo $\log_a(b)$ per indiare quel numero reale $x$ tale che $a^x=b$.
+$$
+c = 
+\begin{cases}
+\sup\{r\in\mathbb{R} : a^c\leq b\}\text{ se }a>1\\
+\sup\{r\in\mathbb{R} : a^c\geq b\}\text{ se }a\in(0,1)
+\end{cases}
+$$
+
+### Numeri Complessi
+I numeri complessi costituiscono un insieme che estende l'insieme dei numeri reali ed in cui, a partire dalla definizione di unità immaginaria è possibile estrarre le radici ad indice pari di numeri negativi e risolvere le equazioni di secondo grado con discriminante negativo.
+- $i$ è l'unità immaginaria, definita come $i^2=-1$.
+- $\mathbb{C} = \{x+iy:x,y\in \mathbb{R}\}$ = "di fatto i numeri complessi sono una coppia di numeri reali".
+- $z=x+iy$ è la forma algebrica di un numero complesso.
+- $x$ è la parte reale di $z$ e si scrive $Re(z)$.
+- $y$ è la parte immaginaria di $z$ e si scrive $Im(z)$.
+- $z=x+iy$ è il coniugato di $z$ e si scrive $\overline{z}=x-iy$.
+- $|z|=\sqrt{x^2+y^2}$ è il modulo di $z$.
+
+    **Osservazione**
+    
+    $\text{Im}(z) = 0 \iff z = x \iff z \in \mathbb{R}\\$
+    quindi $\mathbb{R} \subset \mathbb{C}, \mathbb{R}=\{z\in\mathbb{C}:\text{Im}(z)=0\}$
+
+Su $\mathbb{C}$ non è possibile introdurre una relazione d'ordine che lo renda un campo totalmente ordinato.1`
 
 
 ## Limiti
