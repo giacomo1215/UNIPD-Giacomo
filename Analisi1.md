@@ -278,6 +278,112 @@ Da notare, quando $\Delta \in \mathbb{R}$ e $\Delta \geq 0$, allora $\omega_1, \
 
 ## Funzioni
 
+Siano $X$ e $Y$ due insiemi entrambi non vuoti, chiameremo **funzione** $f$ da $X$ in $Y$ una legge (o corrispondenza) che associa ad ogni elemento $x \in X$ un **unico** elemento $y \in Y$. Scriveremo $y=f(x)$ e chiameremo $y$ "valore di $f$ in $x$", e scriveremo $f:X \to Y$ per indicare che $f$ è una funzione da $X$ in $Y$.
+
+L'insieme $X$ si dice **dominio** di $f$, l'insieme $Y$ si dice **codominio** di $f$.
+
+Chiamiamo l'**immagine** di $f$ il sottoinsieme di $Y$:
+$$
+\{y \in Y : \exist \space x \in X \text{con }f(x)=y\}=Im(f)
+$$
+> Da notare che $Im(f) non è da confondere con la parte immaginaria di un numero complesso.
+
+Il **grafico** di una funzione $f : X \to Y$ è il sottoinsieme di $X \times Y$:
+$$
+G(x) = \{(x,y) \in X \times Y : y=f(x)\}
+$$
+
+Si può definire una funzione come "il suo grafico" nel senso che una funzione con dominio $X$ e codominio $Y$ è un sottoinsieme $G$ di $X \times Y$ tale che:
+$$
+\forall x \in X \space \exist! y \in Y \text{ con } (x,y) \in G
+$$
+
+Sia $f:X \to Y$ una funzione, se $X \subseteq \mathbb{R}$ e $Y \subseteq \mathbb{R}$, allora $f$ è una funzione reale di variabili reali. Se $Y \subseteq \mathbb{R}$, allora diremo che $f$ è una funzione a **valori** reali.
+
+See $f$ è una funzione a variabili reali e se il dominio non è esplicitamente indicato, allora si intende che $f$ è definita sul suo "dominio naturale", che è il sottoisneime più grande di $\mathbb{R}$ in cui la funzione è ben definita.
+
+### Composizione di funzioni
+
+Siano $f:X \to Y$ e $g:Y \to Z$ due funzioni e supponiamo che $f(x) \cap \forall \not= 0$, introduciamo l'insieme $\bar{X} \subseteq X$ definito da $\bar{X}:=\{x \in X : f(x) \in \mathbb{V}\}$. Possiamo definire la funzione $g \circ f$ detta "funzione composta di $g$ e $f$" così:
+$$
+\begin{align*}
+g \circ f : \bar{X} &\to Z \\
+x &\mapsto g(f(x)) \\
+\\
+\bar{X} &\subseteq X \to \mathbb{V} \to Z \\
+&x \to f(x) \to g(f(x))
+\end{align*}
+$$
+
+In generale, non è detto che se si può definire $g \circ f$, allora si possa definire $f \circ g$. Anche se si possono definire entrambe, di solito $f \circ g \not = g \circ f$.
+
+### Funzioni iniettive, suriettive e invertibili
+
+$f : X \to Y$ si dice:
+- **Iniettiva** se $\forall y \in Y \space \exist$ al più un $x \in X$ tale che $f(x)=y$.
+  - equivalentemente $x_1\not=x_2 \implies f(x_1)\not=f(x_2)$.
+  - equivalentemente $f(x_1)\not=f(x_2) \implies x_1\not=x_2$.
+- **Suriettiva** se $\forall y \in Y \space \exist x \in X$ tale che $f(x)=y$.
+- **Biiettiva** se è sia iniettiva che suriettiva.
+
+#### Invertibilità
+
+Diremo che $f$ è invertibile se è biiettiva. A volte si parla di funzioni invertibili chiedendo soltanto f iniettiva: da una funzione iniettiva si ottiene in omdo canonico una funzione bigettiva regtringendo il codominio di $f$ all'immagine di $f$.
+
+Se $f:X \to Y$ è iniettiva, possiamo considerare la funzione inversa (denotata con $f^{-1}$)nel seguente modo:
+$$
+f^{-1} : f(X) \to X
+$$
+$$
+f^{-1}(y) = x \iff f(x) = y
+$$
+
+> $f^{-1}$ è l'inversa di $f$, non $\frac{1}{f}$ che di solito sono diverse.
+
+### Restrizioni
+
+Se $f:X \to Y$ è una funzione e $A \subseteq X$, allora la **restrizione** di $f$ ad $A$ è la funzione $f|_A : A \to Y$ definita da $f|_A(x) = f(x)$ per ogni $x \in A$.
+
+Questa operazione può essere utile per ottenere funzioni iniettive a partire da funzioni che non lo sono.
+
+Sia $f: domf \subset \mathbb{R} \to \mathbb{R}$, allora diciamo che:
+1. $f$ è *pari* se $f(x) = f(-x) \space \forall x \in domf$.
+2. $f$ è *dispari* se $f(x) = -f(-x) \space \forall x \in domf$.
+
+### Periodicità
+
+Sia $f: domf \subset \mathbb{R} \to \mathbb{R}$, allora diremo che $f$ è **periodica** con periodo $T$ ($T>0$) se:
+
+$$
+f(x+T) = f(x) \space \forall x \in domf
+$$
+
+Il periodo minimo di $f$ è il poiù piccolo per cui vale la condizione di periodicità.
+
+Se $f$ e $g$ sono periodiche con periodo $T$, allora $f+g$, $f-g$, $f \cdot g$ e $f \circ g$ sono periodiche con periodo $T$.
+
+### Monotonia
+
+Sia $f$ una funzione, diremo che $f$ è **monotona crescente** quando:
+
+$$
+\forall x_1,x_2 \in domf \text{ con } x_1 < x_2 \implies f(x_1) < f(x_2)
+$$
+
+$f$ è strettamente crescente quando $f$ è crescente, ma viceversa è falso. 
+
+Per esempio: $f(x) = x^3$ è strettamente crescente, ma non è crescente.
+$$
+\text{siano } x_1<x_2, \text{ dobbiamo mostrare che } f(x_1)<f(x_2)\\
+\ \\
+x_1^3 < x_2^3 \iff 0 < x_2^3 - x_1^3 = (x_2-x_1)(x_2^2+x_1x_2+x_1^2) \text{ che è vero} 
+$$
+
+### Limitatezza
+
+Diremo che la funzione $f$ è **limitata** [superiormente/inferiormente] quando $Im(f)$ è limitata [superiormente/inferiormente].
+
+Chiameremo maggiornate o minorante di $f$ ogni maggiorante o minorante di $Im(f)$. Analogamente per massimo, minimo, estremo superiore e inferiore. Tutte le proprietà mostrate per $\max, \min, \sup, \inf$ di insiemi valgono per funzioni perché per definizione una funzione è un insieme.
 
 ## Limiti
 
@@ -288,6 +394,29 @@ Il limite di una funzione è un concetto fondamentale dell'analisi matematica ch
 La definizione formale di limite è la seguente:
 
 $$\lim_{x \to a} f(x) = L$$
+
+Dunque, vogliamo definire $\lim_{x \to \bar{x}} f(x)$ rendendo rigorosa l'affermazione "quando $x$ si avvicina a $\bar{x}$, $f(x)$ si avvicina ad un certo valore $L$ (che sarà il limite)".
+
+Sia $r \in \mathbb{R}^*$, allora:
+- se $r \in \mathbb{R}$ un intorno sferico centrato in $r$ è un intervallo della forma $(r-\varepsilon,r+\varepsilon)$ con $\varepsilon > 0$, oppure è tutto $\mathbb{R}$.
+- se $r = +\infty$ un intorno sferico centrato in $r$ è un intervallo della forma $(M,+\infty)$ con $M \in \mathbb{R}$, oppure è tutto $\mathbb{R}$.
+- se $r = -\infty$ un intorno sferico centrato in $r$ è un intervallo della forma $(-\infty,M)$ con $M \in \mathbb{R}$, oppure è tutto $\mathbb{R}$.
+
+### Proprietà degli intorni
+
+Sia $r \in \mathbb{R}^*$ e siano $U_1$ e $U_2$ due suoi intorni, allora $U_1 \cap U_2$ è un intorno di $r$. Inoltre, esiste la **proprietà di separazione**, che afferma che $\forall r_1, r_2 \in \mathbb{R}^*$ con $r_1 \not = r_2$, esistono due intorni $U_1$ e $U_2$ tali che $r_1 \in U_1$ e $r_2 \in U_2$ e $U_1 \cap U_2 = \emptyset$.
+
+### Punto di accumulazione
+
+Un punto di accumulazione di un insieme reale $E$ è un punto $x_0$ per il quale, comunque si scelga un intorno completo del punto stesso, esiste almeno un punto y dell'insieme $E$ diverso da $x_0$ e tale da appartenere all'intorno considerato. 
+
+Sia $A \subseteq \mathbb{R}$, diremo che $r \in \mathbb{R}^*$ è un **punto di accumulazione** di $A$ quando $\forall$ intorno $U$ di $r$ vale $(A \cap U) \backslash\{r\} \not ={\emptyset}$. 
+
+In altre parole, ogni intorno di $r$ contiene almeno un punto di $A$ diverso da $r$.
+
+#### Punto isolato
+
+
 
 ### Teorema di unicità del limite
 
