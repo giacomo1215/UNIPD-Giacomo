@@ -416,19 +416,82 @@ In altre parole, ogni intorno di $r$ contiene almeno un punto di $A$ diverso da 
 
 #### Punto isolato
 
+Un punto isolato di $A$ deve appartenere ad $A$. In particolare, $+\infty$ e $-\infty$ possono essere punti d'accumulazione ma ***non*** punti isolati di $A$.
+
+Se $f:dom \space f \rarr \mathbb{R}$, e $x_0$ è un punto d'accumulazione di $dom \space f$ e se $P$ è una proprietè che ha senso in $dom\space f$, allora diremo "f soddisfa la proprietà $P$ definitivamente per $x \rarr x_0$ quando esiste $U$ intorno di $x_0$ tale che:
+$$\forall x \in U \backslash\{x_0\} \space f(x) \text{ verifica } P$$
+
+### Definizione di limite di funzione
+
+Il limite di una funzione è un operatore che permette di studiare il comportamento di una funzione nell'intorno di un punto, e srazie al quale possiamo stabilire a quale valore tende la funzione man mano che i valori della variabile indipendente si approssimano a quel punto.
+
+Sia $f:dom \space f \rarr \mathbb{R}$, $x_0$ punto d'accumulazione di $dom \space f$ e $L \in \mathbb{R}*$. Diremo che $L$ è il **limite di $f$ per $x \rarr x_0$** quando:
+
+1. $\forall U$ intorno di $L$ esiste $V$ intorno di $x_0$ tale che $f(x)\in U \space \forall x \in dom \space f \cap V \backslash \{x_0\}$
+2. $\forall U$ intorno di $L$ esiste $V$ intorno di $x_0$ tale che $x \in dom \space f \cap V \backslash \{x_0\} \rArr f(x)\in U$   
+3. $\forall U$ intorno di $l \space f(x)\in U$ definitivamente per $x \rarr x_0$
+   1. se $l\in\mathbb{R}$ diremo che il limite è finito
+   2. se $l=+\infty$ diremo che il limite è $+\infty$
+   3. se $l=-\infty$ diremo che il limite è $-\infty$
+   4. se $l=0$ diremo che la funzione è infinitesima
 
 
 ### Teorema di unicità del limite
 
-Se una funzione in un punto ha un limite finito, allora esso è unico.
+Il teorema di unicità del limite assicura l'unicità del limite di una funzione, se quest'ultimo esiste, al tendere di $x\rarr x_0$ dove $x_0$ può essere un valore finito o indefinito.
+
+Se $f:dom \space f \rarr \mathbb{R}$ e $x_0$ è un punto d'accumulazione di $dom \space f$ e valgono entrambi i limiti:
+$$
+\lim_{x \rarr x_0} f(x) = l_1 \space \text{e} \space \lim_{x \rarr x_0} f(x) = l_2
+$$
+allora $l_1 = l_2$.
+
+Dunque, se una funzione in un punto ha un limite finito, allora esso è unico.
 Basta ricordare che ad ogni valore della X deve corrispondere uno e soltanto un valore della Y. Per assurdo, se $f(x)$ avesse nello stesso punto $x_0$ più di un limite, essa non sarebbe più una funzione e questo contraddice l'ipotesi del teorema.
+
+### Teorema: Limite finito implica locale limitatezza
+
+Se il limite $\lim_{x \rarr x_0} f(x) = l \in \mathbb{R}$, cioè $l \not = \pm \infty$, allora esiste un intorno $U$ di $x_0$ e $\mathbb{N} \in \mathbb{R}$ tale che $\forall \space x \in U\cap dom \space f\backslash \{x_0\}$ vale $|f(x)| \leq N$.
+
+### Limite destro e Limite sinistro
+
+Un limite destro è un limite per $x$ tendente a $x_0$ con i valori di $x$ che si approssimano a $x_0$ nell'intorno destro del punto; nel caso di un limite sinistro i valori si avvicinano a $x_0$ nell'intorno sinistro del punto.
+
+Sia $A \subset \mathbb{R}, A = \emptyset$. Un punto $r \in \mathbb{R}$ è detto punto d'accumulazione destro [sinistro] di $A$ quando $r$ è un punto di accumulazione di $A \cap (r,+\infty)$ [$A \cap (-\infty,r)$]. Chiameremo intorno destro [sinistro] di $r \in \mathbb{R}$ gli insiemi della forma $(r,r+\varepsilon)$ [$(r-\varepsilon,r)$] con $\varepsilon > 0$.
+
+Un punto d'accumulazione destro (o sinistro) è necessariamente un punto d'accumulazione. Viceversa, un punto d'accumulazione è un punto d'accumulazione destro o sinistro, potrebbe non essere entrambi.
 
 ### Permanenza del segno
 
-Se una funzione in un punto $x_0 è dotata di limite $l\neq0$, allora esiste almeno un intorno $I$ di $x_0$ taleche per tutti i punti di $I$ (escluso $x_0$) i valori della funzione hanno lo stesso segno del limite.
+Il teorema della permanenza del segno assicura l'esistenza di un intorno di un punto c in cui la funzione $f(x)$ è concorde con il limite di $f(c)$ per $x \rarr c$, a patto che tale limite sia diverso da 0.
+
+Dunque, se una funzione in un punto $x_0$ è dotata di limite $l\neq0$, allora esiste almeno un intorno $I$ di $x_0$ taleche per tutti i punti di $I$ (escluso $x_0$) i valori della funzione hanno lo stesso segno del limite.
 
 ### Teorema del confronto (carabinieri)
 
-Anche noto come teorema del confronto, il teorema dei Carabinieri serve a determinare il limite di una funzione basandosi sui limiti di altre due funzioni che "incastrano" la nostra funzione.
+Il teorema del confronto, noto anche come il teorema dei Carabinieri, è uno strumento matematico utilizzato in analisi per determinare il limite di una funzione sfruttando il fatto che essa è "stretta" tra altre due funzioni il cui comportamento limite è noto.
 
-Siano $f,g,h$ funzioni definite in un intorno di $x_0$ e tali che $f(x)\leq g(x)\leq h(x)$ per ogni $x$ nell'intorno, se $\lim_{x\to x_0}f(x)=\lim_{x\to x_0}h(x)=L$, allora $\lim_{x\to x_0}g(x)=L$.
+#### Caso Limitato
+
+Siano $f(x), g(x), h(x)$ definite su un certo intervallo, e vale:
+
+- $f(x) \leq g(x) \leq h(x)$ per ogni $x$ nell'intorno di $x_0$
+- $\lim_{x \rarr c} g(x) = \lim_{x \rarr c} h(x) = l \in \mathbb{R}$
+
+allora $\lim_{x \rarr c} g(x) = l$
+
+Immaginiamo che $f(x)$ sia un'auto intrappolata tra due pattuglie di carabinieri, rappresentate da $g(x)$ e $h(x)$. Se i carabinieri convergono allo stesso punto $l$, allora anche l'auto è costretta a raggiungere lo stesso limite $l$.
+
+#### Caso Illimitato
+
+Siano $f(x), g(x), h(x)$ definite su un certo intervallo, e vale:
+
+- $0 \leq f(x) \leq g(x) \leq h(x)$ per ogni $x$ in un intervallo
+- $\lim_{x\rarr c}g(x) = \lim_{x\rarr c}h(x)=\pm \infty$
+
+allora $\lim_{x\rarr c}g(x)=\pm \infty$
+
+Se $f(x)$ è "intrappolata tra due funzioni che crescono o decrescono all'infinito allo stesso ritmo, anche $f(x)$ sarà costretta a comportarsi allo stesso modo.
+
+## Funzioni Iperboliche
+

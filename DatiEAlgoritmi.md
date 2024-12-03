@@ -290,42 +290,291 @@ Un grapho è un modo di rappresentare una relazione che esiste tra coppie di ogg
 
 Il grafo si dice **diretto** se ogni arco $(u,v)\in E$ è una coppia ordinata $(u\rarr v)$, altrimenti si dice non diretto $(u-v)$.
 
+> #### Grafo non diretto
+>```mermaid
+>graph LR
+>    0 --- 5
+>    0 --- 1
+>    0 --- 2
+>    0 --- 6
+>    5 --- 3
+>    5 --- 4
+>    4 --- 3
+>    4 --- 6
+>    7 --- 8
+>    9 --- 10
+>    9 --- 11
+>    11 --- 12
+>    9 --- 12
+>```
+
+
+> #### Grafo diretto
+>```mermaid
+>graph LR
+>    0 --- 5
+>    0 --- 1
+>    0 --- 2
+>    2 --- 3
+>    3 --- 2
+>    0 --- 6
+>    5 --- 3
+>    5 --- 4
+>    4 --- 3
+>    4 --- 6
+>    6 --- 7
+>    6 --- 8
+>    8 --- 6
+>    7 --- 9
+>    9 --- 10
+>    9 --- 11
+>    10 --- 12
+>    11 --- 12
+>    11 --- 4
+>    9 --- 12
+>```
+
+La definizione ammette la presenza di archi multipli tra due ertici (per questo $E$ è una collezione e non un insieme), e di archi (u,u) chiamati **self loop**.
+
+```mermaid
+graph 
+1 --- 2
+1 --- 3
+1 --- 4
+1 --- 5
+1 --- 6
+2 --- 3
+3 --- 4
+6 --- 7
+7 --- 7
+7 --- 8
+8 --- 10
+10 --- 8
+8 --- 9
+```
+
+Un grafo semplice è un grafo senza archi multipli e senza self loop. Per alcune applicazioni agli archi sono associati dei pesi, che possono rappresentare distanze, costi, tempi, o qualsiasi altra quantità.
+
+
+
+## Grafi Semplici e Non Diretti
+
+Un grafo si dice **semplice** se non ha archi multipli e self loop. Un grafo si dice **non diretto** se ogni arco è una coppia non ordinata di vertici. Un grafo non diretto si dice **connesso** se per ogni coppia di vertici esiste un cammino che li collega.
+
 ```mermaid
 graph LR
-    A --> B
-    B --> C
-    C --> D
-    D --> A
+1---2
+1---3
+1---4
+1---5
+1---6
+1---8
+2---4
+3---4
+6---7
+7---8
+8---9
+8---10
+4---10
+10---11
+11---12
+11---13
+11---14
+14---15
+15---16
+16---17
 ```
+
+### Concetti fondamentali: cammino
+
+Cammino (path): $u_1, u_2,\cdots, u_k$ con $(u_i, u_{i+1})\in E$ per $1\leq i < k$. 
+
+Un **cammino** in un grafo è una sequenza di vertici in cui ogni vertice è collegato al successivo da un arco. Un cammino è **semplice** se non attraversa lo stesso arco due volte. Un cammino è **ciclo** se il primo e l'ultimo vertice sono lo stesso. Un grafo è **aciclico** se non contiene cicli.
+
+La lunghezza del cammino si misura in numero di archi. Nel caso di archi pesati, la lunghezza è la somma dei dei pesi degli archi.
+
+> Il cammino si dice **semplice** se non ha vertici ripetuti. Di solito si omette l'aggettivo semplice anche se si parla di cammino semplice.
+
+
+### Concetti fondamentali: cammino minimo e distanza
+
+Dati due vertici $x,y\in V$, il cammino minimo tra x e y, se ne esiste uno, è un cammino $x=u_1,u_2,\cdots,u_k=y$ tale che la lunghezza sia minima. La sua lunghezza è detta distanza $d(x,y)$ tra $x$ e $y$. Se non esiste alcun cammino tra $x$ e $y$, per convenzione si considera $d(x,y)=\infty$.
+
+## Concetti fondamentali: ciclo
+
+Un ciclo è un cammino in cui il primo e l'ultimo vertice sono lo stesso. Un grafo si dice **aciclico** se non contiene cicli.
+
+Il ciclo si dice semplice se non ha vertici ripetuti tranne gli estremi. Di solito si omette l'aggettivo semplice anche se si parla di ciclo semplice.
+
+## Concetti fondamentali: sottografo
+
+Un grafo $G'=(V',E')$ si dice sottografo di un grafo $G=(V,E)$ se $V'\subseteq V$ e $E'\subseteq E$, e tale che gli archi di $E'$ incidono solo su $V'$.
+## Concetti fondamentali: sottografo di copertura
+
+Un sottografo di copertura di un grafo $G=(V,E)$ è un sottografo $G'=(V',E')$ tale che $V'\subseteq V$ e $E'\subseteq E$ e $V'$ contiene tutti i vertici di $G$.
+
+## Concetti fondamentali: grafo connesso
+
+Un grafo si dice connesso se per ogni coppia di vertici esiste un cammino che li collega. Un grafo connesso è un grafo in cui esiste un cammino tra ogni coppia di vertici.
+
+## Concetti fondamentali: grafo disconnesso
+
+Un grafo si dice disconnesso se esiste almeno una coppia di vertici per cui non esiste un cammino che li collega. Un grafo disconnesso è un grafo in cui esistono due vertici che non sono collegati da un cammino.
+
 ```mermaid
 graph LR
-    A <--> B
-    B <--> C
-    C <--> D
-    D <--> A
-    A <--> C
-```
-La definizione amemtte la presenza di archi multipli tra due vertici (per questo E è una collezione e non un insimee), e di archi (u,u) (self loop).
+    A --- B
+    C --- D
 
-Un grafo semplice è un grafo senza archi multipli e senza self loop. 
+```
+
+## Concetti fondamentali: componenti connesse
+
+Le componenti connesse (connected component) di un grafo $G=(V,E)$ sono i sottografi connessi massimali di $G$, ovvero la famiglia di sottografi $G_i=(V_i,E_i)$ con $1 \leq i \leq k$ tali che:
+- $G_i = (V_i, E_i)$ è connesso, per $1 \leq i \leq k$
+- $V = V_1 \cup V_2 \cup \ldots \cup V_k$ (partizione: $V_i \cap V_j = \emptyset \space \forall \space i \neq j$)
+- $E = E_1 \cup E_2 \cup \cdots \ cup \ E_k$ (partizione: $E_i \cap E_j = \emptyset \space \forall \space i \neq j$)
+- $\forall i \not= j$ non esistono archi in $E$ tra $V_i$ e $V_j$
+
+## Concetti fondamentali: albero
+
+Un albero radicato (rooted tree) è un grafo $G=(V,E)$ tale che:
+- esiste un vertice radice $r \in V$
+- Per ogni $u \in V$, con $u \not= r$, esiste un unico padre $p(u \in V)$ e si ha che $E=\{(u, p(u)) : u \in V, u \not= r\}$.
+
+Un albero libero è un grafo connesso e senza cicli.
+
+Una foresta è un grafo senza cicli, ovvero un insieme di alberi liberi disgiunti.
+
+Si noti che un albero ò anche una foresta ma non vale il contrario.
+
+---
+
+- Le visite sono DESIGN PATTERN ALGORITMICI che permettono di visitare tutti i vertici di un grafo.
+- Una semplice scansione di vertici e archi senza un ordine preciso non permetterebbe la soluzione efficiente di molti problemi. Dunque, è la sistematicità della visita che risulta cruciale e strumentale per la risoluzione efficiente dei problemi.
+
+### Breadth-First Search (BFS)
+
+Sia G:=(V;E) un grafo semplice, non diretto e non pesato: 
+
+- Dato $S \in V, C_s \subseteq G$ denota la componente connessa di $G$ contenente $S$
+  - Tutti i vertici raggiungibili da $S$ con cammini e gli archi su essi incidenti.
+- Ricordiamo che dati due vertici $x,y \in V$ nella stessa componente connessa, la loro distanza $d(X,Y)$ è definita lunghezza di un cammino da x a y. Se i vertici sono in componenti connesse distinte, si assume $d(x,y)=+\infty$
+
+Assunzioni sull'implementazione di G=(V,E):
+- per ogni vertice v \in V essite un campo v.ID che vale 1, se v è stato visitato, e vale 0 altrimenti
+- Per ogni arco e \in E esiste un campo e.label che memorizza una opportuna etichetta oppure vale null se e non ha ancora etichetta
+- Per ogni v 1in V, incidentEdges(v) restituisce un iteratore agli archi incidendi su v che possono essere enumerati in tempo \theta(1) ciascuno
+- Per ogni arco e = (v,w) \in E, opposite(v,e) restituisce l'altro vertice di e, ovvero w se v=w e v se v=w
+
+Il seguente design pattern permette la visita di tutto il grafo, nel caso esso non sia connesso. Esso suppone di poter enumerare vertici e archi generando il prossimo vertice/arco in tempo costante.
+
+Dato $G=(V,E)$ con $|V| = n$ e $|E| = m$, la complessità computazionale di BFS è $O(n+m)$ per i seguenti problemi:
+- testare se G è connesso
+- trovare le componenti connesse di G
+- trovare uno spanning tree di G se G è connesso
+
+### Depth-First Search (DFS)
+
+`DFS` è un algoritmo ricorsivo che, a partire da un vertice $s$:
+
+- visita tutti i vertici di $C_s$
+- etichetta ciascun arco di $C_s$ come `DISCOVERY` o `BACK EDGE`
+
+Si usano le stesse ipotesi implementative della BFS.
+
+- Algoritmo: DFS(G,s)
+- Input: grafo $G=(V,E),v\in V$
+- Output: visita ogni vertice raggiungibile da v e non ancora visitato, ed etichetta ogni arco esaminato come `DISCOVERY` o `BACK EDGE`
+
+```java
+forall (e in G.incidentEdges(v)) do
+{
+    if (e.label is null)
+    {
+        w = G.opposite(v,e);
+        if (w.ID == 0)
+        {
+            e.label = "DISCOVERY";
+            DFS(G,w);
+        }
+        else
+            e.label = "BACK EDGE";
+    }
+}         
+```
+
+Si aprono nell'ordine le seguenti invocazioni di DFS(G,i) con i=1,2,3,4,5,6 che etichettano gli archi in questo modo:
 
 ```mermaid
 graph LR
-    A --> B
-    B --> A
-    A --> A
-    B --> C
-    C --> D
-    D --> C
+    1 --- 2
+    1 --- 4
+    2 --- 1
+    2 --- 3
+    2 --- 4
+    3 --- 2
+    3 --- 4
+    3 --- 5
+    4 --- 5
+    4 --- 6
+    5 --- 6
+    6 --- 3
+    6 --- 4
+    6 --- 7
 ```
-
-Per alcune applicazioni agli archi (e a volte ai vertici) sono associati dei pesi
 
 ```mermaid
 graph LR
-    A -->|5| B
-    B -->|3| C
-    C -->|4| D
-    D -->|2| A
+    1 --- 2
+    2 --- 3
+    3 --- 4
+    4 --- 5
+    5 --- 6
+    6 --- 3
 ```
+
+Arrivati alla invocazione `DFS(G,6)`, essa etichetta `(6,3)` come `BACK EDGE` e invoca `DFS(G,4)` etichettando `(6,4)` come `DISCOVERY EDGE`.
+
+```mermaid
+graph LR
+    1 --- 2
+    2 --- 3
+    3 --- 4
+    4 --- 5
+    5 --- 6
+    6 --- 3
+    6 --- 4
+    6 --- 7
+```
+
+DFS(G,4) etichetta (1,4) e (2,4) come `BACK EDGE` e termina la sua esecuzione. Il controllo ripassa a DFS(G,6) che invoca DFS(G,7) etichettando (6,7) come `DISCOVERY EDGE`. A questo punto si chiudono tutte le invocazioni aperte, in quest'ordine, quindi i = 7,6,5,3,2,1, e la DFS termina l'esecuzione.
+
+Per comprendere meglio il significato di `BACK EDGE`, si consideri il grafo non diretto:
+
+```mermaid
+graph TD
+1---2
+2---3
+3---5
+5---6
+6---7
+6---4
+4---2
+6---3
+4---1
+```
+
+Si supponga di eseguire `DFS(G,s)` e che, all'inizio, nessuno dei vertici/archi di C_s sia visitato/etichettato. A fine esecuzione si ha che:
+- tutti i vertici sono visitati e tutti gli archi sono etichettati come `DISCOVERY EDGE` o `BACK EDGE`
+- I `DISCOVERY EDGE` formano uno spanning tree T di C_s radicato in s
+
+La dimostrazione è analoga a quella della BFS.
+
+#### Complessità di `DFS(G,s)`
+Si supponga di eseguire `DFS(G,s)` e che, all'inizio, nessuno dei vertici/archi di C_s sia visitato/etichettato. La complessità di `DFS(G,s)` è $\Theta(m_s)$ dove $m_s$ è il numero di archi in $C_s$.
+
+Consideriamo l'albero della ricorsione per l'invocazione `DFS(G,s)`:
+- dalla proposizione precedente e dal fatto che per costruzione la DFS non può essere invocata due volte sullo stesso vertice, possiamo dedurre che il numero di invocazioni ricorsive è pari al numero di vertici di $C_s$, e c'è un'invocazione per ogni vertice di $C_s$
+- il numero di operazioni eseguite da `DFS(G,v)` escluse le chiamate ricorsive al suo interno sono proporzionali a $\Theta(deg(v))$, il grado di v $\implies$ la complessità di `DFS(G,s)` è $\Theta(\sum_{\text{v vertice di }C_s} degree(v)) = \Theta(m_s)$ dove $m_s$ è il numero di archi in $C_s$.
 

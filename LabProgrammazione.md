@@ -749,7 +749,277 @@ int f(int i)
 ### Linking
 ### Stile
 
-## CMake
-CMake è uno strumento di build automation che permette di generare file di configurazione per diversi sistemi di build. 
-```cpp
+# CMake
+
+## Descrivere un progetto
+
+Un progetto software è spesso composto da molti file sorgente, e progetti complessi possono essere composti da:
+- uno o più eseguibili
+- una o più librerie
+
+Per descrivere un progetto i soli sorgenti non sono sufficienti, è necessario sapere com'è organizzata la compilazione. 
+
+## Sistemi di building
+
+Un sistema di building gestisce il processo di compilazione e linkaggio di un progetto software.
+
+### CMake
+
+CMake è un meta-sistema di building standardizzato, indipendente da compilatore e piattaforma. Viene usato in abbinamento al sistema di building nativo, ed è utile per distribuire codice sorgente con inicazioni di building. Viene supportato da molti IDE, incluso CodeLite.
+
+CMake viene gestito tramite un file di testo chiamato `CMakeLists.txt`, che contiene le istruzioni per la compilazione del progetto.
+
+```mermaid
+
+graph LR
+    A[Descrizione CMakeLists] --> B[Descrizione del sistema nativo]
+    B --> C[Compilazione]
+    D[CMake Software] --> B
+    E[Standard Build System] --> C
+
 ```
+
+### Processo lato utente
+
+CMake è liberamente scaricabile, include un'interfaccia grafica e ha due attività fondamentali: Configure e Generate.
+
+#### Lato Utente
+
+Come utenti possiamo trovarci di fronte a un progetto gestito con CMake. Scaricare un sorgente gestito con CMake permette di avere, oltre al sorgente:
+
+- Descrizione del progetto
+- Sistema che predispone la compilazione
+- Sistema per gestire la compilazione selettiva dei moduli
+  - Parti del progetto possono essere compilate o meno a seconda delle impostazioni
+
+La tipica gestione di un progetto CMake è la seguente:
+
+- Lanciare CMake
+- Selezionare la dir contenente il sorgente 
+- Creare/selezionare la dir che conterrà i prodotti della compilazione
+- Configure
+- Eventuale selezione/deselezione dei moduli
+- Generate
+
+Stessi passaggi anche da riga di comando.
+
+Il tasto `Generate` crea i file per il sistema di building in uso. Dopo aver fatto `Generate`, si chiude CMake e si compila con il normale flusso di lavoro.
+
+### Processo lato sviluppatore
+
+Si crea una descrizione del progetto in un file `CMakeLists.txt`. Questo file contiene le istruzioni per la compilazione del progetto.  Si può usare un IDE per generarli automaticamente. Quelli generati da IDE sono più complicati ed in genere non devono esser modificati. 
+
+#### CMaakeLists
+
+Un file `CMakeLists.txt` contiene una serie di comandi che descrivono il progetto. I comandi sono scritti in un linguaggio di scripting, e sono eseguiti da CMake per generare i file di building.
+
+1. Fissare una versione minima di CMake
+2. Dare il nome al progetto
+3. Selezionare librerie con le dipendenze
+4. Target per la creazione di un eseguibile
+5. Target per la creazione di una libreria
+
+```cmake
+cmake_minimum_required(VERSION 2.8)
+project(<name> VERSION <version> LANGUAGES CXX)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+add_executable(<name> <source1> <source2> ...)
+add_library(<name> <source1> <source2> ...)
+```
+Un esempio pratico potrebbe essere il seguente
+```cmake
+cmake_minimum_required(VERSION 3.10)
+
+project (tuple)
+
+include_directories(include)
+
+add_library(tuple
+    include/tuple.h
+    src/tuple.cpp
+)
+
+add_executable(
+    add_tuple
+    src/add_tuple.cpp
+)
+
+target_link_libraries(add_tuple tuple)
+```
+
+# Ereditarietà - 2 Dicembre
+
+Prendiamo per esempio la creazione di una serie di classi per descrivere entità geometriche. Vogliamo creare una libreria per descriverle, quindi:
+- Punti
+- Forme
+- ...
+
+Una forma possiede:
+- Caratteristiche comuni ad altre forme:
+  - Descritta da un insieme di punti
+  - Funzionalità disegno
+- Caratteristiche che dipendono dalla specifica forma:
+  - Area
+  - Perimetro
+
+È possibile raggrupparle in una classe base. Le classi più specifiche *ereditano* tali caratteristiche comuni e le estendono. Una scelta progettuale usata spesso è produrre molte classi con poche operazioni.
+
+### Point
+```cpp
+struct Point {
+    int x, y;
+}
+```
+### Shape
+
+Definiamo ora una classe `Shape` che rappresenta una *forma generica*, costruita a aprtire da `Point`.
+
+`Shape` implemetna **un'interfaccia** comune a tutte el forme, l'effettiva implementazione dipende dalla specifica forma.
+
+```cpp
+class Shape {
+    public:
+        void draw() const;
+        virtual void move(int dx, int dy);
+
+        Point point(int i) const; // accesso ai punti
+        int number_of_points() const;
+
+        Shape(const Shape&) = delete;
+        Shape& operator=(const Shape&) = delete;
+
+        virtual ~Shape() { }
+
+    protected: 
+        Shape() { }
+        Shape(initializer_list<Point> lst);
+
+        virtual void draw_lines() const; // disegno
+        void add(Point p);               // aggiunta di un punto
+        void set_point(int i, Point p);  // points[i] = p;
+
+    private:
+        vector<Point> points;   // non usato da tutte le Shape
+        Color lcolor;           // dalla libreria grafica
+        Line_style ls;          // dalla libreria grafica
+        Color fcolor;           // dalla libreria grafica
+}
+```
+
+Shape è una classe astratta, costruttore di default e con inizializzazione sono protected. Esiste un altro modo per definire le classi astratte.
+
+È possibile definire classi che ereditano dalla classe Shape
+
+```cpp
+class Circle : public Shape {
+    // ...
+};
+```
+
+La classe Circle incorpora tutto quello che ha Shape, e aggiunge le funzionalità specifiche per un cerchio.
+
+## Is a
+
+Il rapporto tra una classe base e la sua derivata è detto "is a". Un cerchio è una forma, quindi Circle è una Shape. Questa relazione non è biunivoca, una Shape non è necessariamente un cerchio.
+
+## Has a
+
+Un'altra relazione è "has a", che indica che un oggetto contiene un altro oggetto. Ad esempio, un cerchio ha un centro, quindi un cerchio ha un punto.
+
+## Slicing
+
+La relazione *is a* rende possibili alcune operazioni problematiche. Ad esempio, potrei inserire un oggetto circle in un vector di shape. Questo è possibile perché un cerchio è una forma. Tuttavia, se provo a estrarre un oggetto da questo vector, otterrò un oggetto di tipo Shape, non Circle. Questo è chiamato *slicing*.
+
+Lo slicing si verifica quando tentiamo di inserire una classe derivata in uno slot che riesce a contenere solo i membri della classe base. Il compilatore risolve affettando l'oggetto, lasciando solo i membri che trovano posto.
+
+Il costruttore di copia e operator= sono disabilitati (delete) per evitare la creazione di costruttori di copia e operato= di default. Altrimenti, avremmo un problema con il slicing.
+
+```cpp
+class Shape {
+    public:
+    // ...
+        Shape(const Shape&) = delete;
+        Shape& operator=(const Shape&) = delete;
+    // ...
+}
+```
+
+# Funzioni Virtuali
+
+Con le gerarchie di classi utilizziamo tre meccanismi fondamentali:
+- Ereditarietà / derivazione: una classe eredita funzioni e dati membro dalla classe base
+- Funzioni virtuali: possibilità di definire la stessa funzione nella classe base e in quella derivata
+- Incapsulamento: membri private e protected per nascondere i dettagli implementativi.
+
+Alcune funzioni sono dichiarate virtuali, sono utili se sono reimplementate nelle classi derivate
+
+```cpp
+class Shape {
+    // ...
+    virtual void draw_lines() const;
+    // ...
+};
+
+class Circle : public Shape {
+    // ...
+    void draw_lines() const;
+    // ...
+};
+```
+## Overriding
+
+Una classe derivata che ridefinisce una funzione virtuale di una classe base effettua un **override**. Questo fa sì che la funzione nella classe derivata sfrutti l'interfaccia della classe base. La funzione oggetto di override ha stesso nome, stessi tipi e stessa constness della funzione nella classe base.
+
+L'overriding è un elemento chiave del polimorfismo in run-time. L'overriding ha un funzionamento interessante con i puntatori:
+
+```cpp
+class B {
+    // ...
+};
+
+class D : public B {
+    // ...
+};
+
+class DD : public D {
+    // ...
+};
+```
+Un puntatore a B può puntare a un oggetto D o DD. D è un B,  DD è un D e anche un B. Un `vector<B*>` può gestire una collezione di oggetti diversi, tutti derivati da B. Ha chiamate alla stessa funzione virtuale a partire da una collezione id puntatori -- per ciascun oggetto è chiamata la funzione appropriata.
+
+### Override esplicito
+
+In casi reali esistono funzioni espressamente progettate per l'override. È possibile dichiarare esplicitamente questa intenzione con la keyword `override`.
+
+```cpp
+class B {
+    virtual void f() const { cout << "B::f "; }
+    void g() const { cout << "B::g "; }
+};
+
+class D : public B {
+    void f() const override { cout << "D::f "; }
+    void g() const override { cout << "D::g "; } // errore
+};
+
+class DD : public D {
+    void f() const override { cout << "DD::f "; } // errore
+    void g() const override { cout << "DD::g "; } // errore
+};
+```
+
+### Funzioni pure virtuali
+
+Le funzioni virtuali pure sono funzioni che esplicitamente non possono essere implementate nella classe base. Rendono la classe virtuale pura, è impossibile istanziare oggetti di questa classe:
+
+```cpp
+class B {
+    public:
+        virtual void f() = 0; // è richiesto l'overriding
+        virtual voig g() = 0; // è richiesto l'overriding
+};
+
+B b; // errore: B è una classe virtuale pura
+```
+
+Si creano funzioni virtuali pure per impedire di istanziare oggetti di una determinata classe, può essere una cosa voluta. Inoltre, si possono creare per obbligare tutte le classi derivate a implementare una determinata funzione (l'overriding è obbligatorio per le funzioni virtuali pure).
